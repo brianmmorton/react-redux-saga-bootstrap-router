@@ -6,11 +6,20 @@ export default class Login extends Component {
 
   state = { email: '', password: '' }
 
+  componentWillReceiveProps ({ user, }) {
+    if (user.loaded && !!user.data) {
+      this.props.history.push('/todos');
+    }
+  }
+
   _handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await this.props.login(this.state.email, this.state.password);
+      await this.props.login({
+        email: this.state.email,
+        password: this.state.password,
+      });
     }
     catch (err) {
       console.log(err);
@@ -18,6 +27,7 @@ export default class Login extends Component {
   }
 
   render () {
+    const { user } = this.props;
     const { email, password } = this.state;
 
     return (
@@ -47,7 +57,7 @@ export default class Login extends Component {
               />
             </FormGroup>
 
-            <Button type='submit'>Login</Button>
+            <Button type='submit' disabled={user.saving}>Login</Button>
           </Form>
         </div>
       </div>

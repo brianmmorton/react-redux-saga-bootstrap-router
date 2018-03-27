@@ -4,7 +4,7 @@ export default class Profile extends Component {
   render () {
     return (
       <div>
-        Profile {JSON.stringify(this.props.user.data)}
+        Email: {this.props.user.data.email}
       </div>
     )
   }

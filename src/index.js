@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { fetch as fetchUser } from 'store/user';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'styles';
@@ -10,24 +9,15 @@ import createRoutes from './routes';
 import App from 'containers/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import createStore from 'store/create';
+import store from './store';
 
-const store = createStore();
+const state = store.getState();
+const routes = createRoutes(state);
 
-function renderApp () {
-  const state = store.getState();
-  const routes = createRoutes(state);
-
-  ReactDOM.render(
-    <Provider store={store}>
-      <App routes={routes} />
-    </Provider>
-  , document.getElementById('root'));
-}
-
-// initiate user before loading app
-store.dispatch(fetchUser())
-  .then(renderApp)
-  .catch(renderApp);
+ReactDOM.render(
+  <Provider store={store}>
+    <App routes={routes} />
+  </Provider>
+, document.getElementById('root'));
 
 registerServiceWorker();

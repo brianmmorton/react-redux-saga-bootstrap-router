@@ -1,3 +1,4 @@
 /* @flow */
 
-export { default as user } from './user'
+export { reducer as user } from './user'
+export { reducer as todos } from './todos'

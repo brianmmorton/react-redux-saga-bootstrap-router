@@ -2,6 +2,9 @@ import React from 'react';
 import Profile from 'containers/Profile';
 import Home from 'containers/Home';
 import Login from 'containers/Login';
+import Todos from 'containers/Todos';
+
+import store from './store';
 
 import { Route, Redirect, } from 'react-router-dom';
 
@@ -11,8 +14,10 @@ const RouteWithSubRoutes = (routeProps) => {
       exact
       path={routeProps.path}
       render={props => {
-        if (!routeProps.state.user.isAuthenticated
-          && routeProps.protected) {
+        const state = store.getState();
+        if (routeProps.protected
+          && state.user.loaded
+          && !state.user.data) {
           return (
             <Redirect
               to={{
@@ -44,6 +49,11 @@ export default state => [
   {
     path: '/profile',
     component: Profile,
+    protected: true,
+  },
+  {
+    path: '/todos',
+    component: Todos,
     protected: true,
   },
 ].map((route, i) => <RouteWithSubRoutes key={i} state={state} {...route} />);
